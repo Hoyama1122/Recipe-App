@@ -45,7 +45,7 @@ export const LoginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({ message: "เปิดกรอกข้อมูลให้ครบ" });
+      return res.status(400).json({ message: "โปรดกรอกข้อมูลให้ครบ" });
     }
     const user = await prisma.user.findUnique({
       where: {

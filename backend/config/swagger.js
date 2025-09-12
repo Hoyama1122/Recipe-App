@@ -7,7 +7,7 @@ const options = {
     info: {
       title: "Recipe API Docs",
       version: "1.0.0",
-      description: "API documentation for Recipe App",
+      description: "API สําหรับจัดการสูตรอาหาร",
     },
     servers: [
       {

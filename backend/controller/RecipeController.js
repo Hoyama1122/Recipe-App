@@ -11,13 +11,16 @@ export const GetAllRecipt = async (req, res) => {
 
 export const GetRecipeById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; // ดึงจาก params
     const recipe = await prisma.recipe.findUnique({
-      where: {
-        id: Number(id),
-      },
+      where: { id: Number(id) }, // แปลงเป็น Int
     });
-    return res.status(200).json({ recipe: recipe });
+
+    if (!recipe) {
+      return res.status(404).json({ message: "ไม่พบสูตรอาหารนี้" });
+    }
+
+    return res.status(200).json(recipe);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

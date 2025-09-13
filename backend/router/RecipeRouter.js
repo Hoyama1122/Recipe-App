@@ -8,6 +8,7 @@ import {
   PatchRecipe,
 } from "../controller/RecipeController.js";
 import { verifyToken } from "../middleware/middleware.js";
+import { FilterByCategory } from "../controller/FilterController.js";
 /**
  * @swagger
  * /recipes:
@@ -41,9 +42,11 @@ import { verifyToken } from "../middleware/middleware.js";
  *     responses:
  *       200:
  *         description: Recipe created
+ *
  */
 router.route("/").get(GetAllRecipt);
 router.post("/", verifyToken, CreateRecipe);
+router.get("/filter", FilterByCategory);
 router
   .route("/:id")
   .get(GetRecipeById)

@@ -63,21 +63,20 @@ export const LoginUser = async (req, res) => {
       {
         userId: user.id,
         role: user.role,
+        name: user.name,
       },
       process.env.JWT_SECRET,
       {
         expiresIn: process.env.JWT_EXPIRATION || "30d",
       }
     );
-    return res.status(200).json({
-      token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+    res.cookie("token", token, {
+      httpOnly: true, 
+      secure: false, 
+      sameSite: "strict",
     });
+
+    return res.status(200).json({ message: "Login success" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

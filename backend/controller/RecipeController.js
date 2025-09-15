@@ -1,9 +1,36 @@
 import { prisma } from "../lib/prismaClient.js";
 
 export const GetAllRecipt = async (req, res) => {
-  try {
-    const recipe = await prisma.recipe.findMany();
-    return res.status(200).json({ recipe: recipe });
+   try {
+    // input from query string to int
+    const page = parseInt(req.query.page) || 1;  // start page 1
+    const limit = parseInt(req.query.limit) || 10; // default 10 
+    const skip = (page - 1) * limit;
+
+    // ดึงข้อมูล
+    const [recipes, total] = await Promise.all([
+      prisma.recipe.findMany({
+        skip,
+        take: limit,
+        include: {
+          author: { select: { id: true, name: true } }
+        },
+        orderBy: { createdAt: "desc" } 
+      }),
+      prisma.recipe.count()
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    return res.status(200).json({
+      page,
+      limit,
+      total,
+      totalPages,
+      hasPrev: page > 1,
+      hasNext: page < totalPages,
+      recipes
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -11,9 +38,9 @@ export const GetAllRecipt = async (req, res) => {
 
 export const GetRecipeById = async (req, res) => {
   try {
-    const { id } = req.params; // ดึงจาก params
+    const { id } = req.params; 
     const recipe = await prisma.recipe.findUnique({
-      where: { id: Number(id) }, // แปลงเป็น Int
+      where: { id: Number(id) }, 
     });
 
     if (!recipe) {
@@ -28,7 +55,12 @@ export const GetRecipeById = async (req, res) => {
 
 export const CreateRecipe = async (req, res) => {
   try {
-    const { title, description, ingredients, steps, imageUrl } = req.body;
+    const { title, description, ingredients, steps } = req.body;
+    let imageUrl = req.body.imageUrl;
+    if (req.file) {
+      // If file uploaded, set imageUrl to the file path (relative to backend root)
+      imageUrl = `/uploads/${req.file.filename}`;
+    }
     if (!title || !description || !ingredients || !steps) {
       return res.status(400).json({ message: "เปิดกรอกข้อมูลให้ครบ" });
     }

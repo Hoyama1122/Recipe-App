@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -9,8 +10,12 @@ import { swaggerDocs } from "./config/swagger.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve uploaded images statically
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.use(cors({
   origin: "http://localhost:5173",

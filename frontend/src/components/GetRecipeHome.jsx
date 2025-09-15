@@ -11,7 +11,6 @@ const GetRecipeHome = () => {
       const res = await customFetch.get("/recipes");
       setData(res.data);
       console.log(res.data);
-      
     } catch (err) {
       setError(err.message || "Error fetching recipes");
     } finally {
@@ -23,14 +22,20 @@ const GetRecipeHome = () => {
   }, []);
 
   if (loading) return <Loader />;
-  if (error) return <p>เกิดข้อผิดพลาด: {error}</p>;
+  if (error)
+    return (
+      <p className="text-red-500  text-center py-10">เกิดข้อผิดพลาด: {error}</p>
+    );
 
   return (
     <div>
-      <h1 className="py-6 text-4xl text-center">สูตรอาหาร</h1>
+      <h1 className="py-6 text-4xl text-center ">สูตรอาหาร</h1>
       <div className=" grid grid-cols-3  gap-4 p-4">
         {data.recipes?.map((recipe) => (
-          <div key={recipe.id} className="p-4 h-64 shadow rounded flex flex-col items-center justify-between">
+          <div
+            key={recipe.id}
+            className="p-4 h-64 shadow rounded flex flex-col items-center justify-between"
+          >
             {recipe.imageUrl && (
               <img
                 src={`http://localhost:3000${recipe.imageUrl}`}

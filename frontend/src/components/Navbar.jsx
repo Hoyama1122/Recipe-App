@@ -29,7 +29,7 @@ const Navbar = () => {
   };
 
   const handleLogin = () => {
-    setIsLoggedIn(true);
+    
   };
 
   const handleLogout = () => {
@@ -81,12 +81,13 @@ const Navbar = () => {
           {/* Desktop Login/Profile */}
           <div className="hidden md:flex items-center space-x-4">
             {!isLoggedIn ? (
-              <button
+              <Link
+                to="/login"
                 onClick={handleLogin}
                 className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
                 Login
-              </button>
+              </Link>
             ) : (
               <div className="relative">
                 <button

@@ -4,16 +4,18 @@ import Navbar from "./components/Navbar";
 import { Home } from "./pages/Home";
 import Posts from "./pages/Posts";
 import { Bounce, ToastContainer } from "react-toastify";
+import Login from "./pages/login";
 
 function App() {
   return (
     <Router>
       <div className="">
+   
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/posts" element={<Posts />} />
-
+          <Route path="/login" element={<Login />} />
           {/* 404 Page  */}
           <Route
             path="*"

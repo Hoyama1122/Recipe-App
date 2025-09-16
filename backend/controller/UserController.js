@@ -82,3 +82,7 @@ export const LoginUser = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+export const logout = async (req, res) => {
+  res.clearCookie("token");
+  return res.status(200).json({ message: "ออกจากระบบสำเร็จ" });
+}

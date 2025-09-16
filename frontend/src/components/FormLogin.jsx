@@ -1,31 +1,37 @@
 import React, { useState } from "react";
 import customFetch from "../../config/axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 
 const FormLogin = () => {
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!email || !username || !password) {
-     toast.warning("โปรดกรอกข้อมูลให้ครบถ้วน");
+    if (!email || !password) {
+      toast.warning("โปรดกรอกข้อมูลให้ครบถ้วน");
       return;
     }
     setError(null);
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append("username", username);
       formData.append("email", email);
       formData.append("password", password);
 
-      console.log({ email, username, password });
+      const login = await customFetch.post("/login", { email, password });
+      console.log(login.data);
+      toast.success("Login successful");
+      setEmail("");
+      setPassword("");
+      setError(null);
+      navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.message);
     } finally {
       setLoading(false);
     }
@@ -45,20 +51,9 @@ const FormLogin = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full border rounded px-3 py-2"
-          
         />
       </div>
-      <div className="mb-4">
-        <label className="block mb-1">Username</label>
-        <input
-          type="text"
-          name="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full border rounded px-3 py-2"
-          
-        />
-      </div>
+
       <div className="mb-4">
         <label className="block mb-1">Password</label>
         <input
@@ -67,7 +62,6 @@ const FormLogin = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full border rounded px-3 py-2"
-          
         />
       </div>
       {error && <div className="text-red-500 mb-2">{error}</div>}

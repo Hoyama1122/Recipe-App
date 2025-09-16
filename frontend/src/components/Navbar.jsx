@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Menu,
   X,
@@ -11,15 +11,16 @@ import {
   ChefHat,
   Info,
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import customFetch from "../../config/axios";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const location = useLocation();
-
+  const navigator = useNavigate();
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -28,13 +29,26 @@ const Navbar = () => {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
 
-  const handleLogin = () => {
-    
+  const handleLogin = () => {};
+
+  const CheckToken = async () => {
+    try {
+      const res = await customFetch.get("/me");
+      setIsLoggedIn(true);
+      console.log(res.data);
+    } catch (error) {
+      if (error.response.status === 401) {
+        setIsLoggedIn(false);
+      }
+    }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await customFetch.post("/logout");
     setIsLoggedIn(false);
     setIsProfileDropdownOpen(false);
+    toast.success("ออกจากระบบสำเร็จ");
+    navigator("/login");
   };
 
   const navItems = [
@@ -46,6 +60,10 @@ const Navbar = () => {
     return location.pathname === path;
   };
 
+  useEffect(() => {
+    CheckToken();
+  }, []);
+  
   return (
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

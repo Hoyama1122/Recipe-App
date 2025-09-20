@@ -11,7 +11,11 @@ import {
   ChefHat,
   Info,
 } from "lucide-react";
+<<<<<<< Updated upstream
 import { Link, useLocation, useNavigate } from "react-router-dom";
+=======
+import { Link, redirect, useLocation } from "react-router-dom";
+>>>>>>> Stashed changes
 import { toast } from "react-toastify";
 import customFetch from "../../config/axios";
 
@@ -29,6 +33,7 @@ const Navbar = () => {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
 
+<<<<<<< Updated upstream
   const handleLogin = () => {};
 
   const CheckToken = async () => {
@@ -41,6 +46,11 @@ const Navbar = () => {
         setIsLoggedIn(false);
       }
     }
+=======
+  const handleLogin = () => {
+    setIsLoggedIn(false);
+    redirect('/login');
+>>>>>>> Stashed changes
   };
 
   const handleLogout = async () => {

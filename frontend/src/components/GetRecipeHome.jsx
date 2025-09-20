@@ -19,6 +19,7 @@ const GetRecipeHome = () => {
   };
   useEffect(() => {
     fetchRecipes();
+    
   }, []);
 
   if (loading) return <Loader />;

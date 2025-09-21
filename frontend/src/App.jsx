@@ -4,11 +4,7 @@ import Navbar from "./components/Navbar";
 import { Home } from "./pages/Home";
 import Posts from "./pages/Posts";
 import { Bounce, ToastContainer } from "react-toastify";
-<<<<<<< Updated upstream
-import Login from "./pages/login";
-=======
 import Login from "./pages/Login";
->>>>>>> Stashed changes
 
 function App() {
   return (
@@ -19,12 +15,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/posts" element={<Posts />} />
-<<<<<<< Updated upstream
-          <Route path="/login" element={<Login />} />
-=======
           <Route path="/posts/:id" element={<Posts />} />
           <Route path='/login' element={<Login />} />
->>>>>>> Stashed changes
           {/* 404 Page  */}
           <Route
             path="*"

@@ -35,7 +35,7 @@ const GetRecipeHome = () => {
         {data.recipes?.map((recipe) => (
           <div
             key={recipe.id}
-            className="p-4 h-64 shadow rounded flex flex-col items-center justify-between"
+            className="p-4 h-64 shadow rounded flex flex-col items-center justify-between cursor-pointer"
           >
             {recipe.imageUrl && (
               <img

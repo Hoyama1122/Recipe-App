@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import customFetch from "../../config/axios";
 import Loader from "./Loader";
+import { Link } from "react-router-dom";
+
 
 const GetRecipeHome = () => {
   const [data, setData] = useState([]);
@@ -33,7 +35,8 @@ const GetRecipeHome = () => {
       <h1 className="py-6 text-4xl text-center ">สูตรอาหาร</h1>
       <div className=" grid grid-cols-3  gap-4 p-4">
         {data.recipes?.map((recipe) => (
-          <div
+          <Link
+            to={`/recipes/${recipe.id}`}
             key={recipe.id}
             className="p-4 h-64 shadow rounded flex flex-col items-center justify-between cursor-pointer"
           >
@@ -47,7 +50,7 @@ const GetRecipeHome = () => {
             <strong>{recipe.title}</strong>
             <span>{recipe.description}</span>
             <p className="text-sm text-gray-500">{recipe.author.name}</p>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

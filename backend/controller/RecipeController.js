@@ -1,10 +1,10 @@
 import { prisma } from "../lib/prismaClient.js";
 
 export const GetAllRecipt = async (req, res) => {
-   try {
+  try {
     // input from query string to int
-    const page = parseInt(req.query.page) || 1;  // start page 1
-    const limit = parseInt(req.query.limit) || 10; // default 10 
+    const page = parseInt(req.query.page) || 1; // start page 1
+    const limit = parseInt(req.query.limit) || 10; // default 10
     const skip = (page - 1) * limit;
 
     // ดึงข้อมูล
@@ -13,11 +13,11 @@ export const GetAllRecipt = async (req, res) => {
         skip,
         take: limit,
         include: {
-          author: { select: { id: true, name: true } }
+          author: { select: { id: true, name: true } },
         },
-        orderBy: { createdAt: "desc" } 
+        orderBy: { createdAt: "desc" },
       }),
-      prisma.recipe.count()
+      prisma.recipe.count(),
     ]);
 
     const totalPages = Math.ceil(total / limit);
@@ -29,7 +29,7 @@ export const GetAllRecipt = async (req, res) => {
       totalPages,
       hasPrev: page > 1,
       hasNext: page < totalPages,
-      recipes
+      recipes,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -38,9 +38,12 @@ export const GetAllRecipt = async (req, res) => {
 
 export const GetRecipeById = async (req, res) => {
   try {
-    const { id } = req.params; 
+    const { id } = req.params;
     const recipe = await prisma.recipe.findUnique({
-      where: { id: Number(id) }, 
+      where: { id: Number(id) },
+      include:{
+        author: { select: { id: true, name: true } },
+      }
     });
 
     if (!recipe) {
@@ -83,6 +86,9 @@ export const CreateRecipe = async (req, res) => {
 export const DeleteRecipe = async (req, res) => {
   try {
     const { id } = req.params;
+    if (!id) {
+      return res.status(500).json({ message: error.message });
+    }
     const recipe = await prisma.recipe.findUnique({
       where: {
         id: Number(id),
@@ -130,4 +136,3 @@ export const PatchRecipe = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-

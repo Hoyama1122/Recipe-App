@@ -5,18 +5,21 @@ import { Home } from "./pages/Home";
 import Posts from "./pages/Posts";
 import { Bounce, ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
+import GetRecipeById from "./components/GetRecipeById";
+import Register from "./pages/Register";
 
 function App() {
   return (
     <Router>
       <div className="">
-   
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/posts" element={<Posts />} />
           <Route path="/posts/:id" element={<Posts />} />
           <Route path='/login' element={<Login />} />
+          <Route path="/recipes/:id" element={<GetRecipeById />} />
+          <Route path='/register' element={<Register />} />
           {/* 404 Page  */}
           <Route
             path="*"

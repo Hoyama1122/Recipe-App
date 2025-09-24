@@ -10,7 +10,7 @@ const GetRecipeHome = () => {
   const [error, setError] = useState(null);
   const fetchRecipes = async () => {
     try {
-      const res = await customFetch.get("/recipes");
+      const res = await customFetch.get("/recipes/?page=1&limit=10");
       setData(res.data);
       console.log(res.data);
     } catch (err) {
